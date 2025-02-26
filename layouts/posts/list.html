@@ -1,22 +1,58 @@
 {{ define "title" }}
-  {{ title (i18n (lower .Title)) | default .Title }} · {{ .Site.Title }}
+  {{ .Title }} · {{ .Site.Title }}
 {{ end }}
-{{ define "content" }}
-  <section class="container list">
-    <header>
-      <h1 class="title">
-        <a class="title-link" href="{{ .Permalink | safeURL }}">
-          {{ title (i18n (lower .Title)) | default .Title }}
-        </a>
-      </h1>
-    </header>
-    {{ .Content }}
-    <ul>
-      {{- range .Paginator.Pages -}}
-        {{- .Render "li" -}}
-      {{- end -}}
-    </ul>
 
-    {{ partial "pagination.html" . }}
+{{ define "content" }}
+  <section class="container list" style="max-width: 1400px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: 300px minmax(0, 2fr); gap: 4rem; align-items: start; margin: 0 2rem;">
+      <!-- Sidebar Column - Now First -->
+      <aside style="position: sticky; top: 2rem;">
+        <div style="text-align: center; padding: 2rem; border-radius: 8px; background-color: #f8f9fa; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <img src="/{{ .Site.Params.avatarURL }}" alt="Author photo" style="width: 200px; height: 200px; border-radius: 50%; margin-bottom: 1.5rem; object-fit: cover;">
+          <h3 style="margin-bottom: 1rem;">{{ .Site.Params.author }}</h3>
+          <p style="line-height: 1.6;">{{ .Site.Params.info }}</p>
+        </div>
+      </aside>
+
+      <!-- Main Content Column - Now Second -->
+      <div style="max-width: 100%; min-width: 0;">
+        <header>
+          <div style="margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #0d0c0c;">
+            {{ .Site.Params.Description }}
+          </div>
+
+          <!-- Predefined Tags -->
+           Filter per category:
+          <nav class="tags" style="margin: 1.5rem 0;">
+            <a href="{{ "/tags/architecture/" | relURL }}" class="tag" style="margin: 0.5rem;">Architecture</a>
+            <a href="{{ "/tags/transformation/" | relURL }}" class="tag" style="margin: 0.5rem;">Transformation</a>
+            <a href="{{ "/tags/strategy/" | relURL }}" class="tag" style="margin: 0.5rem;">Strategy</a>
+            <a href="{{ "/tags/technology/" | relURL }}" class="tag" style="margin: 0.5rem;">Technology</a>
+          </nav>
+        </header>
+
+        {{ .Content }}
+
+        <ul class="post-list">
+          {{ range .Paginator.Pages }}
+            <li class="post-item" style="margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #eaeaea;">
+              <article>
+                <header>
+                  <h2 class="post-title">
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                  </h2>
+                  <p class="post-date">Posted: {{ .Date.Format "Jan 02, 2006" }}</p>
+                </header>
+                <div class="post-excerpt">
+                  {{ .Description }}
+                </div>
+              </article>
+            </li>
+          {{ end }}
+        </ul>
+
+        {{ partial "pagination.html" . }}
+      </div>
+    </div>
   </section>
 {{ end }}
