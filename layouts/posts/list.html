@@ -3,55 +3,78 @@
 {{ end }}
 
 {{ define "content" }}
-  <section class="container list" style="max-width: 1400px; margin: 0 auto;">
-    <div style="display: grid; grid-template-columns: 300px minmax(0, 2fr); gap: 4rem; align-items: start; margin: 0 2rem;">
-      <!-- Sidebar Column - Now First -->
-      <aside style="position: sticky; top: 2rem;">
-        <div style="text-align: center; padding: 2rem; border-radius: 8px; background-color: #f8f9fa; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-          <img src="/{{ .Site.Params.avatarURL }}" alt="Author photo" style="width: 200px; height: 200px; border-radius: 50%; margin-bottom: 1.5rem; object-fit: cover;">
-          <h3 style="margin-bottom: 1rem;">{{ .Site.Params.author }}</h3>
-          <p style="line-height: 1.6;">{{ .Site.Params.info }}</p>
+  <section class="container mx-auto px-4 max-w-6xl">
+    <!-- Header Section -->
+    <header class="flex flex-col items-center justify-center mb-16 w-full">
+      <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-8 text-center">Blog Posts</h1>
+      <div class="w-full mx-auto">
+        <p class="text-2xl text-gray-600 dark:text-gray-300 leading-relaxed text-center">
+          {{ .Site.Params.Description }}
+        </p>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-[250px_1fr] gap-12">
+      <!-- Category Navigation -->
+      <aside class="sticky top-8">
+        <div class="space-y-6">
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Topics</h2>
+          <nav class="flex flex-col gap-3">
+            {{ range $tag := .Site.Params.featuredTags }}
+              {{ with $.Site.Taxonomies.tags.Get $tag }}
+                <a href="{{ (printf "/tags/%s/" $tag) | relURL }}" 
+                   class="group px-6 py-3 rounded-lg bg-gray-50 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-gray-700 transition-all duration-200">
+                  <div class="flex justify-between items-center">
+                    <span class="text-lg font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                      {{ title $tag }}
+                    </span>
+                    <span class="px-2 py-1 text-sm rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
+                      {{ len . }}
+                    </span>
+                  </div>
+                </a>
+              {{ end }}
+            {{ end }}
+          </nav>
         </div>
       </aside>
 
-      <!-- Main Content Column - Now Second -->
-      <div style="max-width: 100%; min-width: 0;">
-        <header>
-          <div style="margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #0d0c0c;">
-            {{ .Site.Params.Description }}
-          </div>
-
-          <!-- Predefined Tags -->
-           Filter per category:
-          <nav class="tags" style="margin: 1.5rem 0;">
-            <a href="{{ "/tags/architecture/" | relURL }}" class="tag" style="margin: 0.5rem;">Architecture</a>
-            <a href="{{ "/tags/transformation/" | relURL }}" class="tag" style="margin: 0.5rem;">Transformation</a>
-            <a href="{{ "/tags/strategy/" | relURL }}" class="tag" style="margin: 0.5rem;">Strategy</a>
-            <a href="{{ "/tags/technology/" | relURL }}" class="tag" style="margin: 0.5rem;">Technology</a>
-          </nav>
-        </header>
-
-        {{ .Content }}
-
-        <ul class="post-list">
+      <!-- Main Content -->
+      <div class="min-w-0">
+        <ul class="space-y-12">
           {{ range .Paginator.Pages }}
-            <li class="post-item" style="margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #eaeaea;">
-              <article>
-                <header>
-                  <h2 class="post-title">
+            <li class="group">
+              <article class="p-8 rounded-xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-300">
+                <header class="mb-6">
+                  <h2 class="text-3xl sm:text-4xl font-bold mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                     <a href="{{ .Permalink }}">{{ .Title }}</a>
                   </h2>
-                  <p class="post-date">Posted: {{ .Date.Format "Jan 02, 2006" }}</p>
+                  <div class="flex items-center gap-4 text-gray-500 dark:text-gray-400">
+                    <time class="text-lg">{{ .Date.Format "Jan 02, 2006" }}</time>
+                    <span class="text-gray-300 dark:text-gray-600">·</span>
+                    <span class="text-lg">{{ .ReadingTime }} min read</span>
+                  </div>
                 </header>
-                <div class="post-excerpt">
+                <div class="prose dark:prose-invert max-w-none text-xl leading-relaxed">
                   {{ .Description }}
+                </div>
+                <div class="mt-6">
+                  <a href="{{ .Permalink }}" 
+                     class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
+                    Read more
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                  </a>
                 </div>
               </article>
             </li>
           {{ end }}
         </ul>
 
-        {{ partial "pagination.html" . }}
+        <div class="mt-12">
+          {{ partial "pagination.html" . }}
+        </div>
       </div>
     </div>
   </section>
