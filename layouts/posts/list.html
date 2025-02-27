@@ -63,21 +63,21 @@
                     </svg>
                   </div>
                 {{ end }}
-                <div class="px-4">
-                  <header class="[&>h2]:mt-[5px]">
-                    <h2 class="text-3xl sm:text-4xl font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 m-0">
+                <div class="p-8">
+                  <header class="mb-6">
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                       <a href="{{ .Permalink }}">{{ .Title }}</a>
                     </h2>
-                    <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400 mt-1">
+                    <div class="flex items-center gap-4 text-gray-500 dark:text-gray-400">
                       <time class="text-lg">{{ .Date.Format "Jan 02, 2006" }}</time>
                       <span class="text-gray-300 dark:text-gray-600">·</span>
                       <span class="text-lg">{{ .ReadingTime }} min read</span>
                     </div>
                   </header>
-                  <div class="prose dark:prose-invert max-w-none text-xl leading-relaxed mt-2">
+                  <div class="prose dark:prose-invert max-w-none text-xl leading-relaxed">
                     {{ .Description }}
                   </div>
-                  <div class="mt-4">
+                  <div class="mt-6">
                     <a href="{{ .Permalink }}" 
                        class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
                       Read more
